@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>姫野くん専用 単語マスター｜準1級への道</title>
+<style>
+:root{--sky:#2fbdea;--green:#8dc63f;--yellow:#f7d000;--ink:#2b3a42;--bg:#f4fafd;--card:#fff;--ng:#e74c3c;--ok:#27ae60;--purple:#7d5fd3;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+body{font-family:'Hiragino Kaku Gothic ProN','Hiragino Sans','Yu Gothic',Meiryo,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;}
+.wrap{max-width:640px;margin:0 auto;padding:14px;}
+header{background:linear-gradient(135deg,var(--sky),#1fa9d6);color:#fff;padding:12px 0;border-radius:0 0 18px 18px;}
+header .wrap{padding-top:0;padding-bottom:0;display:flex;align-items:center;gap:10px;}
+header .t{flex:1;}
+header .brand{font-size:11px;opacity:.9;letter-spacing:.08em;}
+header h1{font-size:19px;margin-top:2px;}
+header .sub{font-size:12px;opacity:.9;margin-top:1px;}
+.homebtn{border:none;background:rgba(255,255,255,.22);color:#fff;font-size:13px;font-weight:bold;border-radius:999px;padding:8px 12px;cursor:pointer;white-space:nowrap;}
+.card{background:var(--card);border-radius:16px;padding:18px;box-shadow:0 3px 14px rgba(43,58,66,.08);margin-bottom:14px;}
+.btn{display:block;width:100%;padding:14px;border:none;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;transition:.15s;}
+.btn:active{transform:scale(.98);}
+.btn:disabled{opacity:.45;}
+.btn-main{background:var(--sky);color:#fff;}
+.btn-green{background:var(--green);color:#fff;}
+.btn-purple{background:var(--purple);color:#fff;}
+.btn-ghost{background:#eef5f9;color:var(--ink);}
+.btn+.btn{margin-top:10px;}
+h2{font-size:17px;margin-bottom:8px;}
+.muted{color:#7b93a0;font-size:13px;line-height:1.7;}
+/* home */
+.diag{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;margin:10px 0 6px;}
+.diag div{text-align:center;border-radius:8px;padding:6px 2px;font-size:11px;font-weight:bold;}
+.diag b{display:block;font-size:15px;}
+.lv-ok{background:#eafaf0;color:var(--ok);} .lv-mid{background:#fff6d6;color:#9a7b00;} .lv-ng{background:#fdeeec;color:var(--ng);}
+.course{border-left:6px solid var(--sky);}
+.course h3{font-size:16px;}
+.course .meta{font-size:12px;color:#7b93a0;margin:3px 0 8px;line-height:1.6;}
+.pbar{height:10px;border-radius:999px;background:#dfeef5;overflow:hidden;margin:6px 0 10px;}
+.pbar div{height:100%;background:linear-gradient(90deg,var(--sky),var(--green));}
+.sets{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
+.set{border:2px solid #dfeef5;background:#fff;border-radius:10px;padding:8px 2px;font-size:12px;font-weight:bold;text-align:center;cursor:pointer;}
+.set small{display:block;font-size:10px;color:#7b93a0;font-weight:normal;margin-top:1px;}
+.set.clear{border-color:var(--green);background:#f3fbe9;}
+.set.s{border-color:#e6a800;background:#fff8d9;}
+.set.next{border-color:var(--sky);box-shadow:0 0 0 3px rgba(47,189,234,.2);}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.tools .btn{margin:0;font-size:14px;padding:13px 6px;}
+.tools .btn small{display:block;font-size:11px;font-weight:normal;opacity:.9;margin-top:2px;}
+/* stage chips */
+.stages{display:flex;gap:5px;margin:12px 0;}
+.stage-chip{flex:1;text-align:center;font-size:11px;padding:7px 2px;border-radius:999px;background:#dfeef5;color:#7b93a0;font-weight:bold;}
+.stage-chip.active{background:var(--sky);color:#fff;box-shadow:0 3px 8px rgba(47,189,234,.35);}
+.stage-chip.done{background:var(--green);color:#fff;}
+.dots{display:flex;gap:5px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;}
+.dot{width:9px;height:9px;border-radius:50%;background:#d5e5ee;}
+.dot.cur{background:var(--sky);transform:scale(1.3);}
+.dot.hit{background:var(--green);} .dot.miss{background:var(--ng);}
+/* meet */
+.word-big{font-size:34px;font-weight:800;text-align:center;letter-spacing:.02em;word-break:break-all;}
+.pos-chip{display:inline-block;background:var(--yellow);color:#6b5900;font-size:11px;font-weight:bold;border-radius:999px;padding:2px 10px;}
+.center{text-align:center;}
+.jp-answer{text-align:center;font-size:20px;font-weight:bold;color:var(--sky);min-height:30px;margin:10px 0 4px;cursor:pointer;}
+.jp-hidden{color:#b9ccd6;font-size:14px;font-weight:normal;}
+.box{background:#f2f9fc;border-left:4px solid var(--sky);border-radius:8px;padding:10px 12px;font-size:14px;line-height:1.65;margin-top:10px;}
+.box .jp{color:#7b93a0;font-size:12px;margin-top:3px;}
+.box b{color:#1fa9d6;}
+.box.tip{border-color:var(--yellow);background:#fffbe6;}
+.box.use{border-color:var(--purple);background:#f5f1ff;}
+.lbl{font-size:11px;font-weight:bold;color:#7b93a0;letter-spacing:.05em;}
+.spk{border:none;background:#eef5f9;color:var(--ink);border-radius:999px;padding:6px 14px;font-size:14px;font-weight:bold;cursor:pointer;}
+.row2{display:flex;gap:10px;margin-top:14px;} .row2 .btn{flex:1;margin:0;}
+.spelled{font-family:Menlo,Consolas,monospace;letter-spacing:.18em;}
+/* quiz */
+.choices{display:grid;gap:9px;}
+.choice{padding:13px 14px;border:2px solid #dfeef5;border-radius:12px;background:#fff;font-size:16px;font-weight:bold;cursor:pointer;text-align:left;color:var(--ink);}
+.choice.correct{border-color:var(--ok);background:#eafaf0;}
+.choice.wrong{border-color:var(--ng);background:#fdeeec;}
+.choice.dim{opacity:.45;}
+.feedback{border-radius:12px;padding:12px 14px;margin-top:12px;font-size:14px;line-height:1.7;}
+.feedback.good{background:#eafaf0;border:1px solid var(--ok);}
+.feedback.bad{background:#fdeeec;border:1px solid var(--ng);}
+.verdict{font-weight:800;font-size:16px;margin-bottom:4px;}
+.q-prompt{font-size:22px;font-weight:800;text-align:center;margin:6px 0;}
+.q-sentence{font-size:16px;line-height:1.85;background:#f2f9fc;border-radius:10px;padding:14px;margin-bottom:6px;}
+.q-sentence .blank{display:inline-block;min-width:70px;border-bottom:2px solid var(--sky);text-align:center;font-weight:bold;color:var(--sky);}
+.hintline{text-align:center;font-family:Menlo,Consolas,monospace;font-size:22px;letter-spacing:.25em;margin:10px 0;color:#5d7381;}
+input.typ{width:100%;font-size:22px;padding:12px 14px;border:2px solid #cfe3ee;border-radius:12px;font-family:Menlo,Consolas,monospace;letter-spacing:.06em;outline:none;}
+input.typ:focus{border-color:var(--sky);}
+input.typ.okk{border-color:var(--ok);background:#eafaf0;} input.typ.ngg{border-color:var(--ng);background:#fdeeec;}
+.diff{font-family:Menlo,Consolas,monospace;font-size:20px;letter-spacing:.12em;margin:6px 0;}
+.diff .g{color:var(--ok);} .diff .r{color:var(--ng);text-decoration:underline;font-weight:bold;}
+.smallbtns{display:flex;gap:8px;margin-top:10px;} .smallbtns button{flex:1;padding:10px;font-size:14px;}
+/* result */
+.result-score{text-align:center;font-size:44px;font-weight:800;color:var(--sky);}
+.result-score.gold{color:#e6a800;text-shadow:0 0 18px rgba(247,208,0,.65);animation:gp 1.1s ease-in-out infinite alternate;}
+@keyframes gp{from{transform:scale(1);}to{transform:scale(1.07);}}
+.result-rank{text-align:center;font-size:18px;font-weight:bold;margin:4px 0 14px;}
+.passbar{height:12px;border-radius:999px;background:#dfeef5;position:relative;margin:22px 0 16px;}
+.passbar .pfill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--sky),var(--green));transition:width 1s ease;}
+.passbar .pmark{position:absolute;top:-4px;width:2px;height:20px;background:#e6a800;}
+.passbar .plabel{position:absolute;top:-20px;transform:translateX(-50%);font-size:10px;color:#a08300;font-weight:bold;white-space:nowrap;}
+table.res{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0;}
+table.res th{background:#f2f9fc;padding:6px 4px;font-size:11px;color:#5d7381;}
+table.res td{border-bottom:1px solid #eef4f8;padding:6px 4px;text-align:center;}
+table.res td.w{text-align:left;font-weight:bold;}
+.mk-ok{color:var(--ok);font-weight:bold;} .mk-ng{color:var(--ng);font-weight:bold;}
+.review-item{border-left:4px solid var(--ng);background:#fdf6f5;border-radius:10px;padding:10px 12px;margin-bottom:10px;font-size:13px;line-height:1.7;}
+textarea.ta{width:100%;min-height:110px;font-size:15px;border:2px solid #d5e5ee;border-radius:10px;padding:10px;line-height:1.6;}
+.chk{font-size:13px;margin-top:6px;line-height:1.8;}
+.confetti-piece{position:fixed;top:-14px;z-index:999;pointer-events:none;animation:confall linear forwards;}
+@keyframes confall{to{transform:translateY(108vh) rotate(720deg);}}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:50;}
+.modal .card{max-width:340px;width:90%;}
+footer{text-align:center;font-size:11px;color:#a6bcc7;padding:18px 0 30px;}
+@media(max-width:520px){.word-big{font-size:28px;}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="t"><div class="brand">KATEKYO マンツーマン｜姫野くん専用</div><h1>単語マスター</h1><div class="sub">2級の取り違え直し → 準1級へ｜書けるまで覚える</div></div>
+  <button class="homebtn" id="homeBtn">🏠 ホーム</button>
+</div></header>
+<div class="wrap" id="app"></div>
+<footer>© KATEKYO マンツーマン｜例文はすべてオリジナル</footer>
+<script src="data.js"></script>
+<script>
+// ===== storage =====
+const KEY='himenoVocab_v1';
+let S=JSON.parse(localStorage.getItem(KEY)||'{"w":{},"sets":{}}');
+function save(){localStorage.setItem(KEY,JSON.stringify(S));}
+function ws(w){return S.w[w]||(S.w[w]={seen:0,ok:0,miss:0,m:false,sp:0});}
+const SET=10;
+const $=id=>document.getElementById(id);
+const app=$('app');
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const ALL=[];COURSES.forEach(c=>c.words.forEach(w=>{w.course=c.id;ALL.push(w);}));
+// ===== speech =====
+let voice=null;
+function pickVoice(){const vs=speechSynthesis.getVoices().filter(v=>/^en[-_]US/i.test(v.lang));voice=vs.find(v=>/Natural|Neural|Google|Samantha|Aria|Jenny/i.test(v.name))||vs[0]||null;}
+if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
+function say(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.9;if(voice)u.voice=voice;speechSynthesis.speak(u);}
+// ===== nav =====
+let inSession=false;
+$('homeBtn').onclick=()=>{
+  if(!inSession){home();return;}
+  const m=document.createElement('div');m.className='modal';
+  m.innerHTML='<div class="card center"><h2>ホームに戻る？</h2><p class="muted">このセットの途中経過は記録されません。</p><div class="row2"><button class="btn btn-ghost" id="mNo">つづける</button><button class="btn btn-main" id="mYes">もどる</button></div></div>';
+  document.body.appendChild(m);
+  m.querySelector('#mNo').onclick=()=>m.remove();
+  m.querySelector('#mYes').onclick=()=>{m.remove();inSession=false;home();};
+};
+// ===== home =====
+function home(){
+  inSession=false;window.scrollTo(0,0);
+  const D=DIAG;
+  let h=`<div class="card"><h2>📋 10/14 レベル診断の結果</h2>
+  <div class="diag">${D.map(d=>`<div class="${d.cls}">${d.lv}<b>${d.ok}/10</b></div>`).join('')}</div>
+  <p class="muted">中3までは定着。<b>準2級・2級は「わからない」を選ばずに半分ミス＝うろ覚えの取り違え</b>（biased→公平な、adverse→有利な…と<b>反対の意味</b>を選びがち）。準1級は未習。<br>→ ①取り違え直し → ②2級を<b>書ける</b>ように → ③準1級、の順で進めよう。</p></div>`;
+  COURSES.forEach((c,ci)=>{
+    const n=c.words.length, mast=c.words.filter(w=>ws(w.w).m).length, nsets=Math.ceil(n/SET);
+    let nextIdx=-1;for(let i=0;i<nsets;i++){if(!S.sets[c.id+'-'+i]){nextIdx=i;break;}}
+    h+=`<div class="card course" style="border-color:${c.color}"><h3>${c.icon} ${c.name}</h3><div class="meta">${c.desc}</div>
+    <div class="muted">マスター ${mast} / ${n}語</div><div class="pbar"><div style="width:${n?mast/n*100:0}%"></div></div><div class="sets">`;
+    for(let i=0;i<nsets;i++){const b=S.sets[c.id+'-'+i];const cls=b==null?'':(b>=90?'s':(b>=70?'clear':''));
+      h+=`<div class="set ${cls} ${i===nextIdx?'next':''}" data-c="${ci}" data-i="${i}">セット${i+1}<small>${b==null?'未挑戦':(b>=90?'⭐S '+b+'%':b+'%')}</small></div>`;}
+    h+=`</div></div>`;
+  });
+  const seen=ALL.filter(w=>ws(w.w).seen>0);
+  const weak=ALL.filter(w=>{const s=ws(w.w);return s.miss>0&&!s.m;});
+  h+=`<div class="card"><h2>🔁 復習モード</h2><div class="tools">
+   <button class="btn btn-purple" id="spBtn" ${seen.length<4?'disabled':''}>✍️ スペル特訓<small>学習済みから10語・つづりだけ</small></button>
+   <button class="btn btn-main" id="wkBtn" ${weak.length<1?'disabled':''}>🎯 苦手つぶし<small>苦手 ${weak.length}語から</small></button></div>
+   <p class="muted" style="margin-top:8px">セットの中で「意味・つづり・英作文」の3つを1回で全部正解した単語が<b>マスター</b>。まちがえた単語は苦手リストに入ります。</p></div>`;
+  app.innerHTML=h;
+  app.querySelectorAll('.set').forEach(el=>el.onclick=()=>{const c=COURSES[+el.dataset.c],i=+el.dataset.i;startSession(c.words.slice(i*SET,i*SET+SET),{key:c.id+'-'+i,title:`${c.name} セット${i+1}`,pool:c.words});});
+  $('spBtn').onclick=()=>{const pick=shuffle(seen).sort((a,b)=>ws(b.w).miss-ws(a.w).miss).slice(0,10);startSession(shuffle(pick),{title:'スペル特訓',spellOnly:true,pool:ALL});};
+  $('wkBtn').onclick=()=>{const pick=shuffle(weak).slice(0,10);startSession(pick,{title:'苦手つぶし',pool:ALL});};
+}
+// ===== session =====
+let SES;
+const STG=['であう','みわける','つづる','かく'];
+function startSession(words,opt){
+  inSession=true;
+  SES={words,opt,stage:opt.spellOnly?2:0,i:0,res:words.map(()=>({meet:null,mean:null,spell:null,write:null,yourMean:'',yourSpell:'',yourWrite:''}))};
+  stageIntro();
+}
+function chips(){return `<div class="stages">${STG.map((s,k)=>{if(SES.opt.spellOnly&&k!==2)return'';return `<div class="stage-chip ${k===SES.stage?'active':(k<SES.stage?'done':'')}">${k+1}. ${s}</div>`;}).join('')}</div>`;}
+function dots(key){return `<div class="dots">${SES.words.map((w,k)=>{const r=SES.res[k][key];return `<div class="dot ${k===SES.i?'cur':(r===true?'hit':(r===false?'miss':''))}"></div>`;}).join('')}</div>`;}
+const INTRO=[
+ ['📖','であう','カードで意味・例文・つづりのコツを確認。<br>英作文で使う形（コロケーション）も一緒に覚えよう。'],
+ ['🔍','みわける','4択で意味を選ぶ。<br><b>反対の意味のワナ</b>が必ず1つ入っています。<br>あやしいときは焦らず、例文を思い出して。'],
+ ['✍️','つづる','日本語を見て<b>英単語をつづる</b>。<br>まちがえたら、正しいつづりをもう一度打って手で覚えよう。'],
+ ['📝','かく','英作文の例文の空所に入る形を書く。<br>（過去形・複数形などの<b>形の変化</b>にも注意）']];
+function stageIntro(){
+  window.scrollTo(0,0);const [ic,nm,tx]=INTRO[SES.stage];
+  app.innerHTML=`<div class="muted center" style="margin-top:6px">${esc(SES.opt.title)}</div>${chips()}<div class="card center"><div style="font-size:40px">${ic}</div><h2>STEP ${SES.stage+1}：${nm}</h2><p class="muted" style="margin:10px 0 16px">${tx}</p><button class="btn btn-main" id="go">はじめる（${SES.words.length}語）</button></div>`;
+  $('go').onclick=()=>{SES.i=0;[meet,mean,spell,write][SES.stage]();};
+}
+function nextStage(){
+  if(SES.opt.spellOnly||SES.stage===3){result();return;}
+  SES.stage++;stageIntro();
+}
+function hl(ex,form){return esc(ex).replace(esc(form),`<b>${esc(form)}</b>`);}
+// STEP1
+function meet(){
+  window.scrollTo(0,0);const w=SES.words[SES.i];let open=false;
+  app.innerHTML=`${chips()}<div class="card">${dots('meet')}
+   <div class="center"><span class="pos-chip">${w.pos}</span></div>
+   <div class="word-big" style="margin-top:6px">${esc(w.w)}</div>
+   <div class="center" style="margin-top:6px"><button class="spk" id="s1">🔊 発音</button></div>
+   <div class="jp-answer" id="ja"><span class="jp-hidden">意味を思い出してからタップ 👆</span></div>
+   <div id="more" style="display:none">
+    <div class="box"><div class="lbl">英作文で使う形</div><b>${esc(w.col)}</b><div class="jp">${esc(w.colJa)}</div></div>
+    <div class="box"><div class="lbl">例文 <span class="spk" id="s2" style="padding:2px 10px;font-size:12px">🔊</span></div>${hl(w.ex,w.form)}<div class="jp">${esc(w.exJa)}</div></div>
+    <div class="box tip"><div class="lbl">✍️ つづり・使い方のコツ</div><span class="spelled">${esc(w.w.split('').join(' '))}</span><div style="margin-top:4px">${esc(w.tip)}</div></div>
+    <div class="box use"><div class="lbl">📝 英作文では</div>${esc(w.use)}</div>
+    <div class="row2"><button class="btn btn-ghost" id="bAy">🤔 あやしい</button><button class="btn btn-green" id="bOk">👍 わかる</button></div>
+   </div></div>`;
+  $('s1').onclick=()=>say(w.w);
+  const reveal=()=>{if(open)return;open=true;$('ja').innerHTML=esc(w.ja);$('more').style.display='block';$('s2').onclick=()=>say(w.ex);say(w.w);};
+  $('ja').onclick=reveal;
+  const go=v=>{SES.res[SES.i].meet=v;ws(w.w).seen++;save();SES.i++;if(SES.i<SES.words.length)meet();else nextStage();};
+  $('bAy').onclick=()=>go(false);$('bOk').onclick=()=>go(true);
+}
+// STEP2
+function mean(){
+  window.scrollTo(0,0);const w=SES.words[SES.i];
+  const ban=new Set([...w.ja.split('・'),...w.trap.split('・')]);
+  const pool=SES.opt.pool.filter(x=>x.w!==w.w&&!x.ja.split('・').some(p=>ban.has(p))&&x.w!==w.w);
+  const same=shuffle(pool.filter(x=>x.pos===w.pos));const other=shuffle(pool);
+  const ds=[];for(const x of same.concat(other)){if(ds.length>=2)break;if(!ds.includes(x.ja))ds.push(x.ja);}
+  const opts=shuffle([{t:w.ja,ok:true},{t:w.trap,trap:true},...ds.map(t=>({t}))]);
+  app.innerHTML=`${chips()}<div class="card">${dots('mean')}
+   <div class="center"><span class="pos-chip">${w.pos}</span></div>
+   <div class="q-prompt">${esc(w.w)} <button class="spk" id="s1">🔊</button></div>
+   <p class="muted center" style="margin-bottom:10px">意味として正しいものは？</p>
+   <div class="choices">${opts.map((o,k)=>`<button class="choice" data-k="${k}">${esc(o.t)}</button>`).join('')}
+   <button class="choice" data-k="dk" style="color:#7b93a0;font-weight:normal">わからない</button></div><div id="fb"></div></div>`;
+  $('s1').onclick=()=>say(w.w);
+  app.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{
+    if(app.querySelector('.choice.correct'))return;
+    const k=b.dataset.k;const ok=!!(k!=='dk'&&opts[k].ok);
+    app.querySelectorAll('.choice').forEach((c,ci)=>{const o=opts[c.dataset.k];if(o&&o.ok)c.classList.add('correct');else if(c===b)c.classList.add('wrong');else c.classList.add('dim');});
+    SES.res[SES.i].mean=ok;SES.res[SES.i].yourMean=k==='dk'?'わからない':opts[k].t;
+    const trapHit=k!=='dk'&&opts[k].trap;
+    $('fb').innerHTML=`<div class="feedback ${ok?'good':'bad'}"><div class="verdict">${ok?'⭕ 正解！':(trapHit?'❌ ワナにかかった！':'❌ ざんねん')}</div>
+     <b>${esc(w.w)}</b> = ${esc(w.ja)}　／　<span style="color:#e74c3c">「${esc(w.trap)}」はワナ</span><br>${hl(w.ex,w.form)}<div class="muted">${esc(w.exJa)}</div></div>
+     <button class="btn btn-main" id="nx" style="margin-top:12px">次へ</button>`;
+    $('nx').onclick=()=>{SES.i++;if(SES.i<SES.words.length)mean();else nextStage();};
+  });
+}
+// STEP3 spelling
+function diffHtml(ans,you){let h='';for(let k=0;k<ans.length;k++){h+=(you[k]&&you[k].toLowerCase()===ans[k].toLowerCase())?`<span class="g">${esc(ans[k])}</span>`:`<span class="r">${esc(ans[k])}</span>`;}return h;}
+function typingCard({key,promptHtml,answer,onDone}){
+  window.scrollTo(0,0);let hints=1,phase='first';const w=SES.words[SES.i];
+  const hintStr=()=>answer.split('').map((ch,k)=>ch===' '?' ':(k<hints?ch:'_')).join(' ');
+  app.innerHTML=`${chips()}<div class="card">${dots(key)}${promptHtml}
+   <div class="hintline" id="hint">${esc(hintStr())}</div>
+   <input class="typ" id="inp" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="ここに入力">
+   <div class="smallbtns"><button class="btn btn-ghost" id="hb">💡 1文字ヒント</button><button class="btn btn-ghost" id="lb">🔊 聞く</button><button class="btn btn-main" id="ck">決定</button></div>
+   <div id="fb"></div></div>`;
+  const inp=$('inp');inp.focus();
+  $('lb').onclick=()=>say(answer);
+  $('hb').onclick=()=>{if(hints<answer.length-1){hints++;$('hint').textContent=hintStr();}};
+  const check=()=>{
+    const you=inp.value.trim();if(!you)return;
+    const ok=you.toLowerCase()===answer.toLowerCase();
+    if(phase==='first'){
+      const clean=ok&&hints<=1;
+      onDone(clean,you,hints);
+      if(ok){inp.classList.add('okk');inp.disabled=true;
+        $('fb').innerHTML=`<div class="feedback good"><div class="verdict">⭕ ${hints>1?'正解（ヒントあり＝△）':'正解！'}</div>${SES.stage===3?hl(w.ex,w.form)+'<div class="muted">'+esc(w.exJa)+'</div>':'<span class="spelled">'+esc(answer)+'</span>'}</div><button class="btn btn-main" id="nx" style="margin-top:12px">次へ</button>`;
+        $('nx').onclick=next;say(answer);
+      }else{
+        phase='retype';inp.classList.add('ngg');
+        $('fb').innerHTML=`<div class="feedback bad"><div class="verdict">❌ おしい！正しいつづりは</div><div class="diff">${diffHtml(answer,you)}</div><div class="muted">あなた：${esc(you)}　｜　${esc(w.tip)}</div><div style="margin-top:6px;font-weight:bold">👉 正しいつづりを見ないでもう一度打ってみよう</div></div>`;
+        say(answer);
+        setTimeout(()=>{inp.value='';inp.classList.remove('ngg');$('hint').textContent=answer.split('').map(c=>c===' '?' ':'_').join(' ');inp.focus();},1800);
+      }
+    }else{
+      if(ok){inp.classList.add('okk');inp.disabled=true;$('fb').insertAdjacentHTML('beforeend',`<div class="feedback good"><div class="verdict">👍 OK！手で覚えた</div></div><button class="btn btn-main" id="nx" style="margin-top:12px">次へ</button>`);$('nx').onclick=next;}
+      else{inp.classList.add('ngg');setTimeout(()=>{inp.classList.remove('ngg');inp.value='';},600);}
+    }
+  };
+  $('ck').onclick=check;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();if($('nx'))$('nx').click();else check();}};
+  function next(){SES.i++;if(SES.i<SES.words.length)(SES.stage===2?spell:write)();else nextStage();}
+}
+function spell(){
+  const w=SES.words[SES.i];
+  typingCard({key:'spell',answer:w.w,
+    promptHtml:`<div class="center"><span class="pos-chip">${w.pos}</span></div><div class="q-prompt">${esc(w.ja)}</div><p class="muted center">この意味の英単語をつづろう</p>`,
+    onDone:(ok,you,h)=>{SES.res[SES.i].spell=ok;SES.res[SES.i].yourSpell=you+(h>1?`（ヒント${h-1}）`:'');}});
+}
+function write(){
+  const w=SES.words[SES.i];
+  const sent=esc(w.ex).replace(esc(w.form),'<span class="blank">？</span>');
+  typingCard({key:'write',answer:w.form,
+    promptHtml:`<div class="q-sentence">${sent}</div><div class="muted" style="margin-bottom:4px">${esc(w.exJa)}</div><p class="muted">ヒント：「${esc(w.ja)}」／ 形の変化に注意</p>`,
+    onDone:(ok,you,h)=>{SES.res[SES.i].write=ok;SES.res[SES.i].yourWrite=you+(h>1?`（ヒント${h-1}）`:'');}});
+}
+// ===== result =====
+function confetti(gold){const cs=gold?['#f7d000','#e6a800','#ffe680','#fff3b0']:['#2fbdea','#8dc63f','#f7d000','#e74c3c'];for(let i=0;i<(gold?110:70);i++){const p=document.createElement('div');p.className='confetti-piece';p.style.left=Math.random()*100+'vw';p.style.width=p.style.height=(6+Math.random()*7)+'px';p.style.background=cs[i%cs.length];p.style.animationDuration=(2+Math.random()*2.5)+'s';p.style.animationDelay=Math.random()*.8+'s';document.body.appendChild(p);setTimeout(()=>p.remove(),5500);}}
+function result(){
+  inSession=false;window.scrollTo(0,0);
+  const keys=SES.opt.spellOnly?['spell']:['mean','spell','write'];
+  let tot=0,ok=0;
+  SES.words.forEach((w,k)=>{const r=SES.res[k];const s=ws(w.w);let all=true;
+    keys.forEach(x=>{tot++;if(r[x])ok++;else all=false;});
+    if(all){s.ok++;if(!SES.opt.spellOnly)s.m=true;}else{s.miss++;s.m=false;}
+    if(SES.opt.spellOnly){if(r.spell)s.sp++;}
+  });
+  const pct=Math.round(ok/tot*100);
+  if(SES.opt.key){const b=S.sets[SES.opt.key];if(b==null||pct>b)S.sets[SES.opt.key]=pct;}
+  save();
+  const gold=pct>=90,pass=pct>=70;
+  const mk=v=>v==null?'-':(v?'<span class="mk-ok">○</span>':'<span class="mk-ng">×</span>');
+  const wrong=SES.words.map((w,k)=>({w,r:SES.res[k]})).filter(o=>keys.some(x=>!o.r[x]));
+  let h=`<div class="card"><div class="muted center">${esc(SES.opt.title)}</div>
+   <div class="result-score ${gold?'gold':''}">${pct}%</div>
+   <div class="result-rank">${gold?'⭐ S級合格！完璧に近い！':(pass?'🎉 合格！':'もう一息！苦手をつぶそう')}</div>
+   <div class="passbar"><div class="pfill" style="width:0%"></div><div class="pmark" style="left:70%"></div><div class="plabel" style="left:70%">合格70%</div><div class="pmark" style="left:90%"></div><div class="plabel" style="left:90%">S 90%</div></div>
+   <table class="res"><tr><th>単語</th>${SES.opt.spellOnly?'<th>つづり</th>':'<th>であう</th><th>意味</th><th>つづり</th><th>作文</th>'}</tr>
+   ${SES.words.map((w,k)=>{const r=SES.res[k];return `<tr><td class="w">${esc(w.w)}</td>${SES.opt.spellOnly?`<td>${mk(r.spell)}</td>`:`<td>${r.meet==null?'-':(r.meet?'👍':'🤔')}</td><td>${mk(r.mean)}</td><td>${mk(r.spell)}</td><td>${mk(r.write)}</td>`}</tr>`;}).join('')}</table>
+   <p class="muted">※ヒントを2文字以上使った正解は×扱い（本番では書けないため）。</p></div>`;
+  if(wrong.length){h+=`<div class="card"><h2>📌 まちがえた単語の復習</h2>${wrong.map(({w,r})=>`<div class="review-item"><b style="font-size:15px">${esc(w.w)}</b>（${w.pos}）＝ ${esc(w.ja)}
+    ${r.mean===false?`<div>意味：あなた「${esc(r.yourMean)}」→ 正解「${esc(w.ja)}」${r.yourMean===w.trap?'　<b style="color:#e74c3c">反対/似た意味のワナ</b>':''}</div>`:''}
+    ${r.spell===false?`<div>つづり：あなた「${esc(r.yourSpell)}」→ <span class="spelled"><b>${esc(w.w)}</b></span></div>`:''}
+    ${r.write===false?`<div>作文：あなた「${esc(r.yourWrite)}」→ <b>${esc(w.form)}</b></div>`:''}
+    <div class="muted">${esc(w.tip)}</div><div>${hl(w.ex,w.form)}</div></div>`).join('')}</div>`;}
+  if(!SES.opt.spellOnly){
+    h+=`<div class="card"><h2>📝 ミニ英作文チャレンジ</h2><p class="muted">今日の単語を<b>2つ以上</b>使って、意見文を1〜2文書いてみよう（例：「SNSは若者に良い影響を与えるか？」）。使えた単語とつづりはアプリがチェックします。</p>
+     <div class="muted" style="margin:6px 0">${SES.words.map(w=>`<span class="pos-chip" style="background:#eef5f9;color:#2b3a42;margin:2px">${esc(w.col)}</span>`).join(' ')}</div>
+     <textarea class="ta" id="essay" placeholder="I think ... because ..."></textarea><div class="chk" id="chk"></div>
+     <button class="btn btn-purple" id="cpEssay" style="margin-top:8px">📋 先生に送る用にコピー</button></div>`;
+  }
+  h+=`<div class="card"><button class="btn btn-ghost" id="cp">📋 結果をコピー（先生に送る）</button><button class="btn btn-main" id="again">もう一度このセット</button><button class="btn btn-green" id="hm">ホームへ</button></div>`;
+  app.innerHTML=h;
+  setTimeout(()=>{const f=app.querySelector('.pfill');if(f)f.style.width=pct+'%';},80);
+  if(pass)confetti(gold);
+  const words=SES.words,opt=SES.opt;
+  const today=new Date().toLocaleDateString('ja-JP');
+  const summary=()=>`【単語マスター】姫野 ${today}\n${opt.title}：${pct}%\nまちがい：${wrong.map(o=>o.w.w).join(', ')||'なし'}`;
+  const copy=t=>{navigator.clipboard?navigator.clipboard.writeText(t).then(()=>alert('コピーしました！LINEなどに貼り付けて送ってね')):prompt('コピーしてね',t);};
+  $('cp').onclick=()=>copy(summary());
+  $('again').onclick=()=>startSession(words,opt);
+  $('hm').onclick=home;
+  if($('essay')){
+    const run=()=>{const t=$('essay').value;const low=t.toLowerCase();
+      const used=words.filter(w=>new RegExp('\\b'+w.w.toLowerCase().slice(0,Math.max(4,w.w.length-2)),'i').test(low));
+      const exact=used.filter(w=>new RegExp('\\b('+w.w+'|'+w.form+')','i').test(t));
+      $('chk').innerHTML=t.trim()?`使えた単語：${used.length?used.map(w=>exact.includes(w)?`<span class="mk-ok">✔ ${esc(w.w)}</span>`:`<span class="mk-ng">？ ${esc(w.w)}（つづり確認）</span>`).join('　'):'まだなし'}`+(used.length>=2?'　🎉 2語クリア！':''):'';};
+    $('essay').oninput=run;
+    $('cpEssay').onclick=()=>copy(summary()+`\n\n【ミニ英作文】\n${$('essay').value}\n\n※英検準1級の意見論述の基準で、文法・語法・つづりを添削してください。`);
+  }
+}
+home();
+</script>
+</body>
+</html>
