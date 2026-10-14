@@ -139,7 +139,23 @@ const ALL=[];COURSES.forEach(c=>c.words.forEach(w=>{w.course=c.id;ALL.push(w);})
 let voice=null;
 function pickVoice(){const vs=speechSynthesis.getVoices().filter(v=>/^en[-_]US/i.test(v.lang));voice=vs.find(v=>/Natural|Neural|Google|Samantha|Aria|Jenny/i.test(v.name))||vs[0]||null;}
 if('speechSynthesis' in window){pickVoice();speechSynthesis.onvoiceschanged=pickVoice;}
-function say(t){if(!('speechSynthesis' in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.9;if(voice)u.voice=voice;speechSynthesis.speak(u);}
+// 端末の読み上げは機種によって無音になることがあるため、
+// ①話し中のときだけ止めて少し待つ ②一時停止状態を解除 ③発話オブジェクトを保持（GC対策）
+// ④1.5秒たっても話し始めなければ、声を指定せず（端末標準の声で）もう一度話す
+let curU=null,badVoice=false;
+function say(t,retry){
+  if(!('speechSynthesis' in window))return;
+  const ss=speechSynthesis;
+  if(!voice&&!badVoice)pickVoice();
+  const go=()=>{
+    const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=.9;
+    if(voice&&!badVoice&&!retry)u.voice=voice;
+    let started=false;u.onstart=()=>{started=true;};
+    curU=u;ss.resume();ss.speak(u);
+    if(!retry)setTimeout(()=>{if(!started&&curU===u){badVoice=true;ss.cancel();say(t,true);}},1500);
+  };
+  if(ss.speaking||ss.pending){ss.cancel();setTimeout(go,120);}else go();
+}
 // ===== nav =====
 let inSession=false;
 $('homeBtn').onclick=()=>{
@@ -261,6 +277,8 @@ function typingCard({key,promptHtml,answer,onDone}){
    <div class="smallbtns"><button class="btn btn-ghost" id="hb">💡 1文字ヒント</button><button class="btn btn-ghost" id="lb">🔊 聞く</button><button class="btn btn-main" id="ck">決定</button></div>
    <div id="fb"></div></div>`;
   const inp=$('inp');inp.focus();
+  // キーボード表示中にボタンを押すと画面がずれてタップが外れることがあるので、入力欄のフォーカスを保ったまま押せるようにする
+  ['lb','hb'].forEach(id=>$(id).addEventListener('mousedown',e=>e.preventDefault()));
   $('lb').onclick=()=>say(answer);
   $('hb').onclick=()=>{if(hints<answer.length-1){hints++;$('hint').textContent=hintStr();}};
   const check=()=>{
